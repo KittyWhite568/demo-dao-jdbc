@@ -43,7 +43,7 @@ public class SellerDaoJDBC implements SellerDao {
 				ResultSet rs = st.getGeneratedKeys();
 				if (rs.next()) {
 					int id = rs.getInt(1);
-					obj.setId(id);
+					obj.setId(null);
 				}
 				DB.closeResultSet(rs);
 			} else {
@@ -53,7 +53,9 @@ public class SellerDaoJDBC implements SellerDao {
 			throw new DbException(e.getMessage());
 		} finally {
 			DB.closeStatement(st);
+
 		}
+
 	}
 
 	@Override
@@ -147,9 +149,8 @@ public class SellerDaoJDBC implements SellerDao {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement(
-					"SELECT seller.*,department.Name as DepName " + "FROM seller INNER JOIN department "
-							+ "ON seller.DepartmentId = department.Id ");
+			st = conn.prepareStatement("SELECT seller.*,department.Name as DepName "
+					+ "FROM seller INNER JOIN department " + "ON seller.DepartmentId = department.Id ");
 
 			rs = st.executeQuery();
 
@@ -176,7 +177,6 @@ public class SellerDaoJDBC implements SellerDao {
 			DB.closeResultSet(rs);
 		}
 	}
-
 
 	@Override
 	public List<Seller> findByDepartment(Department department) {
